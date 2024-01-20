@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.trainning.amphibians.R
 import com.trainning.amphibians.data.amphibians
 import com.trainning.amphibians.ui.screens.AmphibianCard
+import com.trainning.amphibians.ui.screens.HomeSreen
 
 @Composable
 fun AmphibiansApp() {
@@ -38,12 +39,9 @@ fun AmphibiansApp() {
                 .padding(it)
         ) {
             // viewModel
-            AmphibianCard(
-                amphibian = amphibians[0],
+            HomeSreen(
+                amphibians = amphibians,
                 modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth()
-                    .aspectRatio(0.9f),
             )
         }
     }

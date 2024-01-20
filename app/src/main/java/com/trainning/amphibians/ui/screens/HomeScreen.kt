@@ -1,10 +1,14 @@
 package com.trainning.amphibians.ui.screens
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -15,6 +19,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -25,20 +30,34 @@ import com.trainning.amphibians.network.Amphibian
 import com.trainning.amphibians.ui.theme.AmphibiansTheme
 
 @Composable
-fun HomeSreen() {
-
+fun HomeSreen(amphibians: List<Amphibian>, modifier: Modifier = Modifier) {
+    AmphibiansGridScreen(amphibians = amphibians, modifier = modifier)
 }
 
 @Composable
 fun AmphibiansGridScreen(amphibians: List<Amphibian>, modifier: Modifier = Modifier) {
-
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(1),
+        modifier = modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(4.dp)
+    ) {
+        items(items = amphibians, key = { amphibian -> amphibian.name }) {
+            AmphibianCard(
+                amphibian = it,
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxWidth()
+                    .aspectRatio(0.9f),
+            )
+        }
+    }
 }
 
 @Composable
 fun AmphibianCard(amphibian: Amphibian, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier,
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Column(
             modifier = Modifier
@@ -48,7 +67,7 @@ fun AmphibianCard(amphibian: Amphibian, modifier: Modifier = Modifier) {
         ) {
             Text(
                 text = amphibian.name,
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
             )
         }
         Column(
@@ -86,12 +105,9 @@ fun AmphibianCard(amphibian: Amphibian, modifier: Modifier = Modifier) {
 @Composable
 fun PreviewAAmphibianCard() {
     AmphibiansTheme {
-        AmphibianCard(
-            amphibian = amphibians[0],
+        HomeSreen(
+            amphibians = amphibians,
             modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth()
-                .aspectRatio(.9f),
         )
     }
 }
