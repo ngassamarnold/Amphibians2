@@ -26,12 +26,26 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.trainning.amphibians.R
 import com.trainning.amphibians.data.amphibians
-import com.trainning.amphibians.network.Amphibian
+import com.trainning.amphibians.model.Amphibian
+import com.trainning.amphibians.ui.components.ErrorScreen
+import com.trainning.amphibians.ui.components.LoadingScreen
 import com.trainning.amphibians.ui.theme.AmphibiansTheme
 
 @Composable
-fun HomeSreen(amphibians: List<Amphibian>, modifier: Modifier = Modifier) {
-    AmphibiansGridScreen(amphibians = amphibians, modifier = modifier)
+fun HomeSreen(
+    amphibiansUiState: AmphibiansUiState,
+    retryAction: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    when (amphibiansUiState) {
+        is AmphibiansUiState.Loading -> LoadingScreen(modifier = modifier.fillMaxSize())
+        is AmphibiansUiState.Success -> AmphibiansGridScreen(
+            amphibians = amphibiansUiState.amphibians,
+            modifier = modifier
+        )
+
+        is AmphibiansUiState.Error -> ErrorScreen(retryAction, modifier = modifier.fillMaxSize())
+    }
 }
 
 @Composable
@@ -105,7 +119,7 @@ fun AmphibianCard(amphibian: Amphibian, modifier: Modifier = Modifier) {
 @Composable
 fun PreviewAAmphibianCard() {
     AmphibiansTheme {
-        HomeSreen(
+        AmphibiansGridScreen(
             amphibians = amphibians,
             modifier = Modifier
         )
