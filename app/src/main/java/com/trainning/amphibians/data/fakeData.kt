@@ -1,6 +1,6 @@
 package com.trainning.amphibians.data
 
-import com.trainning.amphibians.network.Amphibian
+import com.trainning.amphibians.model.Amphibian
 
 val amphibians: List<Amphibian> =
     listOf(
