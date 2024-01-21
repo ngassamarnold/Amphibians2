@@ -2,12 +2,8 @@
 
 package com.trainning.amphibians.ui
 
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -20,12 +16,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.trainning.amphibians.R
-import com.trainning.amphibians.data.amphibians
-import com.trainning.amphibians.ui.screens.AmphibianCard
+import com.trainning.amphibians.ui.screens.AmphibiansViewModel
 import com.trainning.amphibians.ui.screens.HomeSreen
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AmphibiansApp() {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -38,15 +34,18 @@ fun AmphibiansApp() {
                 .fillMaxSize()
                 .padding(it)
         ) {
-            // viewModel
+            val amphibiansViewModel: AmphibiansViewModel =
+                viewModel(factory = AmphibiansViewModel.Factory)
             HomeSreen(
-                amphibians = amphibians,
+                amphibiansUiState = amphibiansViewModel.amphibiansUiState,
+                retryAction = amphibiansViewModel::getAmphibians,
                 modifier = Modifier
             )
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AmphibiansAppBar(scrollBehavior: TopAppBarScrollBehavior, modifier: Modifier = Modifier) {
     TopAppBar(
